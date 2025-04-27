@@ -26,7 +26,6 @@ function CheckinBooking() {
   const { checkin, isCheckingIn } = useCheckin();
   const moveBack = useMoveBack();
 
-  // Can't use as initial state, because booking will still be loading
   useEffect(() => {
     if (booking?.isPaid !== undefined) {
       setConfirmPaid(booking.isPaid);
@@ -71,7 +70,6 @@ function CheckinBooking() {
 
       <BookingDataBox booking={booking} />
 
-      {/* LATER */}
       {!hasBreakfast && (
         <Box>
           <Checkbox
@@ -91,7 +89,6 @@ function CheckinBooking() {
         <Checkbox
           checked={confirmPaid}
           onChange={() => setConfirmPaid((confirm) => !confirm)}
-          // If the guest has already paid online, we can't even undo this
           disabled={confirmPaid || isCheckingIn}
           id="confirm"
         >

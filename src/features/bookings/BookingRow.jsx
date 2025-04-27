@@ -1,12 +1,9 @@
 import styled from "styled-components";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
-
-// import { useDeleteBooking } from "features/bookings/useDeleteBooking";
 import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
-// import { useCheckout } from "features/check-in-out/useCheckout";
 import { format, isToday } from "date-fns";
 import Menus from "../../ui/Menus";
 import {
@@ -61,9 +58,6 @@ function BookingRow({
     cabins: { name: cabinName },
   },
 }) {
-  // const { mutate: deleteBooking, isLoading: isDeleting } = useDeleteBooking();
-  // const { mutate: checkout, isLoading: isCheckingOut } = useCheckout();
-
   const navigate = useNavigate();
 
   const { checkOut, isCheckingOut } = useCheckout();

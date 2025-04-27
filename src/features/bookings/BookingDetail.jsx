@@ -25,7 +25,6 @@ const HeadingGroup = styled.div`
 
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
-  // const { mutate: deleteBooking, isLoading: isDeleting } = useDeleteBooking();
   const { checkOut, isCheckingOut } = useCheckout();
   const { removeBooking, isDeleting } = useRemoveBooking();
 
@@ -43,7 +42,6 @@ function BookingDetail() {
 
   const { status, id: bookingId } = booking;
 
-  // We return a fragment so that these elements fit into the page's layout
   return (
     <>
       <Row type="horizontal">
