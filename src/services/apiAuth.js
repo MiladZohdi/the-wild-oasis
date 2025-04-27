@@ -55,33 +55,37 @@ export async function logout() {
   if (error) throw new Error(error.message);
 }
 
-export async function updateUser({ name, avatar }) {
-  const { data: nameData, error: nameError } = await supabase.auth.updateUser({
-    data: { name },
-  });
+export async function updateUser({ name, avatar, password }) {
+  if (password) {
+    const { error: nameError } = await supabase.auth.updateUser({
+      password,
+    });
+    if (nameError) throw new Error(nameError.message);
+  }
 
-  if (nameError) throw new Error(nameError.message);
+  if (name || avatar) {
+    const { error: nameError } = await supabase.auth.updateUser({
+      data: { name },
+    });
+    if (nameError) throw new Error(nameError.message);
+    const avatarName = avatar
+      ? `${Math.random()}-${avatar.name}`.replaceAll("/", "")
+      : null;
 
-  const avatarName = avatar
-    ? `${Math.random()}-${avatar.name}`.replaceAll("/", "")
-    : null;
+    if (!avatar) return;
 
-  if (!avatar) return nameData;
+    const { error: storageError } = await supabase.storage
+      .from("avatars")
+      .upload(avatarName, avatar);
 
-  const { error: storageError } = await supabase.storage
-    .from("avatars")
-    .upload(avatarName, avatar);
+    if (storageError) throw new Error(storageError.message);
 
-  if (storageError) throw new Error(storageError.message);
-
-  const { data: avatarData, error: avatarError } =
-    await supabase.auth.updateUser({
+    const { error: avatarError } = await supabase.auth.updateUser({
       data: {
         avatar: `${supabaseUrl}/storage/v1/object/public/avatars//${avatarName}`,
       },
     });
 
-  if (storageError) throw new Error(avatarError.message);
-
-  return { nameData, avatarData };
+    if (storageError) throw new Error(avatarError.message);
+  }
 }
